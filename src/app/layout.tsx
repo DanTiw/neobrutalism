@@ -5,8 +5,8 @@ import {Red_Hat_Mono} from "next/font/google"
 import Navbar from "./navbar";
 
 const redHatMono = Red_Hat_Mono({
-  variable: "--font-red-hat-mono",
-  weight: "700",
+weight: "700",
+
 });
 
 const geistSans = localFont({
@@ -33,10 +33,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`redHatMono.className antialiased bg-bg`}
-      >
+        className={redHatMono.className }
+      > 
+      <div className="bg-bg antialiased">
+
         <Navbar />
         {children}
+      </div>
       </body>
     </html>
   );
