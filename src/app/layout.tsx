@@ -6,7 +6,7 @@ import Navbar from "./navbar";
 
 const redHatMono = Red_Hat_Mono({
 weight: "700",
-
+subsets: ["latin"],
 });
 
 const geistSans = localFont({
