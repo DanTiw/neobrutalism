@@ -53,7 +53,6 @@ const SocialButton: React.FC<SocialButtonProps> = ({ icon, label, link, classNam
       className={`border-4 border-black p-4 flex flex-col items-center justify-center text-white font-bold transform transition-all duration-300 hover:-rotate-2 hover:translate-y-[-4px] hover:shadow-[4px_4px_0_0_#000] ${className}`}
     >
       {icon}
-      <span className="mt-2 uppercase text-sm">{label}</span>
     </a>
   )
 }
