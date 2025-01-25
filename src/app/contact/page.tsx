@@ -1,98 +1,118 @@
 "use client"
 
-import Link from 'next/link'
-import React, { useState } from 'react'
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import type React from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { GithubIcon, LinkedinIcon } from "lucide-react"
+import { Github, Linkedin, Twitter, Youtube } from "lucide-react"
+import { motion } from "framer-motion"
 
-const ContactForm: React.FC = () => {
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [message, setMessage] = useState('')
-    const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
+const Contact: React.FC = () => {
+  const socialLinks = [
+    { 
+      icon: <Twitter size={24} />, 
+      label: "Twitter", 
+      url: "https://twitter.com/DanTiw22", 
+      color: "bg-sky-400", 
+      hoverColor: "hover:bg-sky-500" 
+    },
+    {
+      icon: <Linkedin size={24} />,
+      label: "LinkedIn",
+      url: "https://linkedin.com/in/danishtiwari",
+      color: "bg-blue-500",
+      hoverColor: "hover:bg-blue-600"
+    },
+    { 
+      icon: <Github size={24} />, 
+      label: "GitHub", 
+      url: "https://github.com/DanTiw", 
+      color: "bg-gray-800",
+      hoverColor: "hover:bg-gray-900" 
+    },
+    { 
+      icon: <Youtube size={24} />, 
+      label: "YouTube", 
+      url: "https://youtube.com/yourusername", 
+      color: "bg-red-500",
+      hoverColor: "hover:bg-red-600" 
+    },
+  ]
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        setStatus('submitting')
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.1,
+      },
+    },
+  }
 
-        try {
-            const response = await fetch('/api/form', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, message }),
-            })
-
-            if (response.ok) {
-                console.log("submitted")
-                setStatus('success')
-                setName('')
-                setEmail('')
-                setMessage('')
-            } else {
-                setStatus('error')
-            }
-        } catch (error) {
-            setStatus('error')
-        }
+  const itemVariants = {
+    hidden: { y: 50, opacity: 0, scale: 0.9 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 10
+      }
+    },
+    hover: {
+      scale: 1.05,
+      rotate: [-2, 2, -2],
+      transition: { duration: 0.2 }
     }
+  }
 
-    return (
-        <div className="max-h-screen bg-bg p-4 sm:p-8">
-            <div className="max-w-2xl mx-auto bg-white border-8 border-black p-8  shadow-[8px_8px_0_0_#000]">
-                <h1 className="text-4xl font-bold text-center mb-8 uppercase ">Contact Me!</h1>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <Label htmlFor="name" className="text-lg font-bold uppercase">Name</Label>
-                        <Input
-                            id="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                            className="mt-2 border-4 border-black text-lg p-3 w-full focus:outline-none focus:ring-4 focus:ring-[#ffc800] transform transition-transform focus:rotate-1"
-                        />
-                    </div>
-                    <div>
-                        <Label htmlFor="email" className="text-lg font-bold uppercase">Email</Label>
-                        <Input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            className="mt-2 border-4 border-black text-lg p-3 w-full focus:outline-none focus:ring-4 focus:ring-[#ffc800] transform transition-transform focus:-rotate-1"
-                        />
-                    </div>
-                    <div>
-                        <Label htmlFor="message" className="text-lg font-bold uppercase">Message</Label>
-                        <Textarea
-                            id="message"
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            required
-                            rows={4}
-                            className="mt-2 border-4 border-black text-lg p-3 w-full focus:outline-none focus:ring-4 focus:ring-[#ffc800] transform transition-transform focus:rotate-1"
-                        />
-                    </div>
-                    <Button
-                        type="submit"
-                        disabled={status === 'submitting'}
-                        className="w-full bg-[#ffc800] text-black border-4 border-black text-xl font-bold uppercase p-4 hover:bg-[#FFDC58] transition-colors transform hover:-rotate-2 hover:translate-y-[-4px] hover:shadow-[4px_4px_0_0_#000]"
-                    >
-                        {status === 'submitting' ? 'Sending...' : 'Send Message'}
-                    </Button>
-                </form>
-                {status === 'success' && (
-                    <p className="mt-4 text-2xl font-bold text-black bg-[#ffc800] p-4 border-4 border-black transform rotate-2">Your message has been sent successfully!</p>
-                )}
-                {status === 'error' && (
-                    <p className="mt-4 text-2xl font-bold text-white bg-black p-4 border-4 border-[#ffc800] transform -rotate-2">There was an error sending your message. Please try again.</p>
-                )}
-            </div>
-        </div>
-    )
+  return (
+    <div className="min-h-[calc(100vh-6rem)] bg-bg flex items-center justify-center p-4">
+      <div className="w-full max-w-2xl bg-white border-8 border-black p-6 sm:p-8 shadow-[12px_12px_0_0_#000]">
+        <motion.h1 
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-3xl sm:text-5xl font-bold text-center mb-8 sm:mb-12 uppercase tracking-tight"
+        >
+          Connect With Me!
+        </motion.h1>
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {socialLinks.map((link) => (
+            <motion.div 
+              key={link.label} 
+              variants={itemVariants}
+              whileHover="hover"
+              className="w-full"
+            >
+              <Link href={link.url} target="_blank" rel="noopener noreferrer" passHref>
+                <Button
+                  className={`
+                    w-full ${link.color} ${link.hoverColor} 
+                    text-white border-4 border-black 
+                    text-base sm:text-xl font-bold uppercase 
+                    p-3 sm:p-4 transition-all 
+                    flex items-center justify-center gap-2 sm:gap-3
+                    hover:shadow-[6px_6px_0_0_#000]
+                  `}
+                >
+                  {link.icon}
+                  {link.label}
+                </Button>
+              </Link>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </div>
+  )
 }
 
-export default ContactForm
+export default Contact
